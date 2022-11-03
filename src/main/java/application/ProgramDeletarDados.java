@@ -1,10 +1,11 @@
 package application;
 
 import db.DB;
+import db.DbIntegrityException;
 
 import java.sql.*;
 
-public class ProgramAtualizarDados {
+public class ProgramDeletarDados {
     public static void main(String[] args) {
 
         //atualizar dados
@@ -23,21 +24,20 @@ public class ProgramAtualizarDados {
 
             //intanciei o objeto do tipo statment
             st = conn.prepareStatement(
-                    "UPDATE seller "
-                            + "SET BaseSalary = BaseSalary + ?"
-                            + "WHERE "
-                            + "(DepartmentId = ?)");
+                    "DELETE FROM department "
+                    +" WHERE "
+                    +"Id=?"
+                    );
 
             //atribuir valores para as duas interrogações
-            st.setDouble(1,200.00);
-            st.setInt(2,2);
+            st.setInt(1,2);
 
             int rowsAffected = st.executeUpdate();
 
             System.out.println("Done ! Rows Affected: "+rowsAffected);
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DbIntegrityException(e.getMessage());
         } finally {
 
             DB.closeStatment(st);
